@@ -29,7 +29,6 @@
       const heroDistance = Math.max(1, hero.offsetHeight * .66);
       const heroProgress = Math.min(1, y / heroDistance);
       heroMedia.style.transform = `translate3d(0,${heroProgress * (innerWidth < 821 ? 82 : 185)}px,0)`;
-      heroTitle.style.transform = `translate3d(0,${heroProgress * (innerWidth < 821 ? 35 : 105)}px,0)`;
       heroTitle.style.opacity = String(1 - heroProgress * .64);
       mediaLabel.style.opacity = String(1 - heroProgress * .78);
     }
