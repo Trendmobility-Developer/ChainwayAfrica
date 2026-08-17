@@ -104,7 +104,7 @@
   function openProduct(id) {
     const product = productById(id);
     if (!product || !productDialog) return;
-    $('#productDialogContent').innerHTML = `<div class="dialog-product"><div class="dialog-media"><img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}"></div><div class="dialog-copy"><p class="kicker">${escapeHTML(product.categories[0])}</p><h2>${escapeHTML(product.model)}</h2><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.description)}</p><div class="dialog-tags">${product.categories.map(category => `<span>${escapeHTML(category)}</span>`).join('')}</div><button class="button yellow" type="button" data-quote-product="${product.id}">Request pricing <span>↗</span></button><br><a class="dialog-source" href="${escapeHTML(product.source)}" target="_blank" rel="noopener">Official Chainway product source ↗</a></div></div>`;
+    $('#productDialogContent').innerHTML = `<div class="dialog-product"><div class="dialog-media"><img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}"></div><div class="dialog-copy"><p class="kicker">${escapeHTML(product.categories[0])}</p><h2>${escapeHTML(product.model)}</h2><h3>${escapeHTML(product.name)}</h3><p>${escapeHTML(product.description)}</p><div class="dialog-tags">${product.categories.map(category => `<span>${escapeHTML(category)}</span>`).join('')}</div><button class="button yellow" type="button" data-quote-product="${product.id}">Request pricing <span>↗</span></button></div></div>`;
     productDialog.showModal();
     document.body.classList.add('dialog-open');
     productDialog.querySelector('[data-quote-product]').addEventListener('click', () => selectForQuote(product));
