@@ -1,5 +1,5 @@
 (() => {
-  const CHAT_API_URL = 'https://chainway-chat.chainway.workers.dev';
+  const CHAT_API_URL = 'https://chainway-chat.chainway.workers.dev/chat';
   const HISTORY_KEY = 'chainwayAiChatHistory';
   const NUDGE_DISMISSED_KEY = 'chainwayAiNudgeDismissed';
   const KNOWN_CATEGORIES = [

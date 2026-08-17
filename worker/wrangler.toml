@@ -1,3 +1,11 @@
 name = "chainway-chat"
 main = "chat-worker.js"
 compatibility_date = "2025-01-01"
+
+# Stores client-side error reports (see js/error-log.js and the /log, /logs
+# routes in chat-worker.js). Create with:
+#   wrangler kv namespace create CHAINWAY_LOGS
+# then replace the id below with the one it prints.
+[[kv_namespaces]]
+binding = "CHAINWAY_LOGS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"

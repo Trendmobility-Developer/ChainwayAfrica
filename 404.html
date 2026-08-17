@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page not found | Chainway Southern Africa</title>
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/images/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body{background:#080d13}
+    .error-logo{position:absolute;top:28px;left:28px}
+    .error-logo img{width:160px}
+    .error-main{min-height:100vh;display:flex;align-items:center;padding:100px 24px}
+    .error-main .shell{text-align:center;color:#fff}
+    .error-main .kicker{justify-content:center}
+    .error-main p.lead{max-width:520px;margin:18px auto 32px;color:#aeb9c4}
+    .error-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <a class="error-logo" href="index.html" aria-label="Chainway Southern Africa home">
+    <img src="assets/images/chainway-africa-logo.jpg" alt="Chainway Africa">
+  </a>
+  <main class="error-main">
+    <div class="shell">
+      <p class="kicker light">Error 404</p>
+      <h2>That page went <em>off the grid.</em></h2>
+      <p class="lead">The page you're looking for doesn't exist or may have moved. Try the full catalog, or head back home.</p>
+      <div class="error-cta">
+        <a class="button yellow" href="index.html">Back to home <span>→</span></a>
+        <a class="button ghost" href="products.html">Browse products <span>→</span></a>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/error-log.js"></script>
+  <script>
+    fetch('https://chainway-chat.chainway.workers.dev/log', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        type: '404',
+        message: 'Page not found',
+        page: location.href,
+        source: document.referrer || '',
+        userAgent: navigator.userAgent,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  </script>
+</body>
+</html>

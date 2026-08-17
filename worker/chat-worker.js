@@ -114,11 +114,14 @@ Site actions: the page you're embedded in can act on your behalf. When appropria
 Rules for the action block: at most one per reply; only emit "quote" once you have a specific product in mind; only emit "filter" with a category name copied exactly from the list above; only emit "compare" with 2-3 exact model+name strings from the catalog above; never mention the action block in your visible reply text or explain what it does — it is invisible machinery, not something to describe to the user.`;
 
 const DEFAULT_MODEL = 'openai/gpt-oss-20b:free';
+const SITE_URL = 'https://www.chainwayafrica.co.za/';
 
-// Origins allowed to call this worker. CORS matches on scheme+host only (no path),
-// so the GitHub Pages project path (/ChainwayAfrica/) doesn't matter here.
-// The localhost/127.0.0.1 entries cover VS Code Live Server.
+// Origins allowed to call this worker. CORS matches on scheme+host only (no path).
+// Keep the github.io and localhost entries even after the domain switch — they're
+// still useful for testing a branch/preview before it's live on the real domain.
 const ALLOWED_ORIGINS = [
+  'https://www.chainwayafrica.co.za',
+  'https://chainwayafrica.co.za',
   'https://trendmobility-developer.github.io',
   'http://127.0.0.1:5500',
   'http://localhost:5500',
@@ -128,14 +131,152 @@ function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
   return {
     'Access-Control-Allow-Origin': allowed,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Vary': 'Origin',
   };
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch]));
+}
+
+async function handleChat(request, env, cors) {
+  if (!env.OPENROUTER_API_KEY) {
+    return new Response('Worker is not configured with an OpenRouter API key.', { status: 500, headers: cors });
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response('Invalid JSON body.', { status: 400, headers: cors });
+  }
+
+  const incoming = Array.isArray(body?.messages) ? body.messages : [];
+  if (!incoming.length) {
+    return new Response('messages is required.', { status: 400, headers: cors });
+  }
+
+  const history = incoming
+    .slice(-24)
+    .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+    .map(m => ({ role: m.role, content: m.content.slice(0, 4000) }));
+
+  if (!history.length) {
+    return new Response('No valid messages provided.', { status: 400, headers: cors });
+  }
+
+  const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'authorization': `Bearer ${env.OPENROUTER_API_KEY}`,
+      'HTTP-Referer': SITE_URL,
+      'X-Title': 'Chainway Southern Africa',
+    },
+    body: JSON.stringify({
+      model: env.OPENROUTER_MODEL || DEFAULT_MODEL,
+      max_tokens: 1500,
+      stream: true,
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history],
+    }),
+  });
+
+  if (!upstream.ok || !upstream.body) {
+    const detail = await upstream.text().catch(() => '');
+    return new Response(`Upstream error (${upstream.status}): ${detail}`, { status: 502, headers: cors });
+  }
+
+  return new Response(upstream.body, {
+    headers: {
+      ...cors,
+      'content-type': 'text/event-stream',
+      'cache-control': 'no-cache',
+    },
+  });
+}
+
+// Client-side JS errors get POSTed here (see js/error-log.js). Stored in KV
+// with a 30-day TTL so the store self-prunes. Requires the CHAINWAY_LOGS KV
+// binding — see worker/wrangler.toml.
+async function handleLog(request, env, cors) {
+  if (!env.CHAINWAY_LOGS) {
+    // Logging isn't configured — fail silently so a missing KV binding never
+    // breaks the site for visitors. The one-time setup is in wrangler.toml.
+    return new Response('ok', { status: 202, headers: cors });
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response('Invalid JSON body.', { status: 400, headers: cors });
+  }
+
+  const entry = {
+    type: typeof body?.type === 'string' ? body.type.slice(0, 40) : 'error',
+    message: typeof body?.message === 'string' ? body.message.slice(0, 500) : '',
+    source: typeof body?.source === 'string' ? body.source.slice(0, 300) : '',
+    line: Number.isFinite(body?.line) ? body.line : null,
+    column: Number.isFinite(body?.column) ? body.column : null,
+    stack: typeof body?.stack === 'string' ? body.stack.slice(0, 2000) : '',
+    page: typeof body?.page === 'string' ? body.page.slice(0, 300) : '',
+    userAgent: typeof body?.userAgent === 'string' ? body.userAgent.slice(0, 300) : '',
+    time: new Date().toISOString(),
+  };
+
+  const key = `log:${String(Date.now()).padStart(13, '0')}:${crypto.randomUUID().slice(0, 8)}`;
+  await env.CHAINWAY_LOGS.put(key, JSON.stringify(entry), { expirationTtl: 60 * 60 * 24 * 30 });
+
+  return new Response('ok', { status: 202, headers: cors });
+}
+
+// GET /logs?key=<LOGS_ACCESS_KEY> — a plain HTML view of the most recent
+// client-side errors, newest first. Gated by a shared-secret query param
+// rather than a login, since this is a low-stakes read-only debug view.
+async function handleLogsView(request, env, cors) {
+  const url = new URL(request.url);
+  if (!env.LOGS_ACCESS_KEY || url.searchParams.get('key') !== env.LOGS_ACCESS_KEY) {
+    return new Response('Not authorised.', { status: 401, headers: cors });
+  }
+  if (!env.CHAINWAY_LOGS) {
+    return new Response('Logging is not configured (missing CHAINWAY_LOGS KV binding).', { status: 500, headers: cors });
+  }
+
+  const list = await env.CHAINWAY_LOGS.list({ prefix: 'log:', limit: 200 });
+  const keys = list.keys.slice().reverse();
+  const entries = (await Promise.all(keys.map(async k => {
+    const raw = await env.CHAINWAY_LOGS.get(k.name);
+    try { return JSON.parse(raw); } catch { return null; }
+  }))).filter(Boolean);
+
+  const rows = entries.map(e => `<tr>
+    <td>${escapeHtml(e.time)}</td>
+    <td>${escapeHtml(e.type)}</td>
+    <td>${escapeHtml(e.message)}</td>
+    <td>${escapeHtml(e.page)}</td>
+    <td>${escapeHtml(e.source)}${e.line ? ':' + e.line : ''}</td>
+    <td>${e.stack ? `<details><summary>stack</summary><pre>${escapeHtml(e.stack)}</pre></details>` : ''}</td>
+    <td>${escapeHtml(e.userAgent)}</td>
+  </tr>`).join('');
+
+  const html = `<!doctype html><html><head><meta charset="utf-8"><title>Chainway site — error log</title>
+<style>body{font-family:system-ui,sans-serif;background:#0d141c;color:#dce2e8;padding:24px;margin:0}
+h1{font-size:1.2rem}table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{border:1px solid #2d3741;padding:8px;vertical-align:top;text-align:left}
+th{background:#161f29;position:sticky;top:0}pre{white-space:pre-wrap;max-width:420px;margin:6px 0 0}
+tr:nth-child(even){background:#131b24}</style></head>
+<body><h1>Recent client-side errors (${entries.length})</h1>
+<table><thead><tr><th>Time (UTC)</th><th>Type</th><th>Message</th><th>Page</th><th>Source</th><th>Stack</th><th>User agent</th></tr></thead>
+<tbody>${rows || '<tr><td colspan="7">No errors logged yet — good sign.</td></tr>'}</tbody></table></body></html>`;
+
+  return new Response(html, { headers: { ...cors, 'content-type': 'text/html;charset=utf-8' } });
+}
+
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
     const origin = request.headers.get('Origin') || '';
     const cors = corsHeaders(origin);
 
@@ -143,62 +284,10 @@ export default {
       return new Response(null, { headers: cors });
     }
 
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405, headers: cors });
-    }
+    if (url.pathname === '/chat' && request.method === 'POST') return handleChat(request, env, cors);
+    if (url.pathname === '/log' && request.method === 'POST') return handleLog(request, env, cors);
+    if (url.pathname === '/logs' && request.method === 'GET') return handleLogsView(request, env, cors);
 
-    if (!env.OPENROUTER_API_KEY) {
-      return new Response('Worker is not configured with an OpenRouter API key.', { status: 500, headers: cors });
-    }
-
-    let body;
-    try {
-      body = await request.json();
-    } catch {
-      return new Response('Invalid JSON body.', { status: 400, headers: cors });
-    }
-
-    const incoming = Array.isArray(body?.messages) ? body.messages : [];
-    if (!incoming.length) {
-      return new Response('messages is required.', { status: 400, headers: cors });
-    }
-
-    const history = incoming
-      .slice(-24)
-      .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
-      .map(m => ({ role: m.role, content: m.content.slice(0, 4000) }));
-
-    if (!history.length) {
-      return new Response('No valid messages provided.', { status: 400, headers: cors });
-    }
-
-    const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${env.OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'https://trendmobility-developer.github.io/ChainwayAfrica/',
-        'X-Title': 'Chainway Southern Africa',
-      },
-      body: JSON.stringify({
-        model: env.OPENROUTER_MODEL || DEFAULT_MODEL,
-        max_tokens: 1500,
-        stream: true,
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history],
-      }),
-    });
-
-    if (!upstream.ok || !upstream.body) {
-      const detail = await upstream.text().catch(() => '');
-      return new Response(`Upstream error (${upstream.status}): ${detail}`, { status: 502, headers: cors });
-    }
-
-    return new Response(upstream.body, {
-      headers: {
-        ...cors,
-        'content-type': 'text/event-stream',
-        'cache-control': 'no-cache',
-      },
-    });
+    return new Response('Not found. Routes: POST /chat, POST /log, GET /logs?key=...', { status: 404, headers: cors });
   },
 };
