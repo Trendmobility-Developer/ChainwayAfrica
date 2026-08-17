@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Force the www host (matches the canonical URLs already in the page meta tags)
+RewriteCond %{HTTP_HOST} ^chainwayafrica\.co\.za$ [NC]
+RewriteRule ^ https://www.chainwayafrica.co.za%{REQUEST_URI} [L,R=301]
+
+ErrorDocument 404 /404.html
