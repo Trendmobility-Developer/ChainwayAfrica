@@ -164,6 +164,10 @@
   const soundToggle = $('#soundToggle');
   let soundEnabled = false;
 
+  const startHeroPlayback = () => heroVideo.play().catch(() => {});
+  startHeroPlayback();
+  heroVideo.addEventListener('canplay', startHeroPlayback, { once: true });
+
   function applyHeroAudio(scrollPosition = window.scrollY) {
     const fadeDistance = Math.max(1, heroMedia.offsetHeight * .9);
     const visibility = Math.max(0, Math.min(1, 1 - scrollPosition / fadeDistance));
