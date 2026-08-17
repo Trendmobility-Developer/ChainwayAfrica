@@ -41,10 +41,10 @@
 
   function productCard(product) {
     const selected = state.compare.includes(product.id);
-    return `<article class="product-card reveal" data-product-id="${product.id}">
+    return `<article class="product-card reveal" data-product-id="${product.id}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="View details for ${escapeHTML(product.name)}">
       <div class="product-image"><span class="product-category">${escapeHTML(product.categories[0])}</span><img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy"></div>
       <div class="product-body"><h3 class="product-model">${escapeHTML(product.model)}</h3><p class="product-name">${escapeHTML(product.name)}</p><p class="product-description">${escapeHTML(product.description)}</p>
-      <div class="product-actions"><button class="detail-button" type="button" data-open-product="${product.id}">View details →</button><button class="compare-toggle${selected ? ' selected' : ''}" type="button" data-compare-product="${product.id}" aria-pressed="${selected}">${selected ? 'Selected' : 'Compare'}</button></div></div>
+      <div class="product-actions"><button class="compare-toggle${selected ? ' selected' : ''}" type="button" data-compare-product="${product.id}" aria-pressed="${selected}">${selected ? 'Selected' : 'Compare'}</button></div></div>
     </article>`;
   }
 
@@ -54,8 +54,21 @@
     count.textContent = result.length;
     grid.innerHTML = visible.length ? visible.map(productCard).join('') : '<div class="empty-state"><h3>No matching products</h3><p>Try a broader category or a different search term.</p></div>';
     loadMore.hidden = visible.length >= result.length;
-    grid.querySelectorAll('[data-open-product]').forEach(button => button.addEventListener('click', () => openProduct(button.dataset.openProduct)));
-    grid.querySelectorAll('[data-compare-product]').forEach(button => button.addEventListener('click', () => toggleCompare(Number(button.dataset.compareProduct))));
+    grid.querySelectorAll('[data-product-id]').forEach(card => {
+      card.addEventListener('click', event => {
+        if (event.target.closest('[data-compare-product]')) return;
+        openProduct(card.dataset.productId);
+      });
+      card.addEventListener('keydown', event => {
+        if (event.target !== card || !['Enter', ' '].includes(event.key)) return;
+        event.preventDefault();
+        openProduct(card.dataset.productId);
+      });
+    });
+    grid.querySelectorAll('[data-compare-product]').forEach(button => button.addEventListener('click', event => {
+      event.stopPropagation();
+      toggleCompare(Number(button.dataset.compareProduct));
+    }));
     observeReveals(grid);
   }
 
