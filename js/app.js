@@ -224,12 +224,33 @@
     renderProducts();
   }));
 
-  $('#quoteForm').addEventListener('submit', event => {
+  $('#quoteForm').addEventListener('submit', async event => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const subject = `Chainway Southern Africa enquiry — ${data.get('company')}`;
-    const body = `Name: ${data.get('name')}\nCompany: ${data.get('company')}\nEmail: ${data.get('email')}\nPhone: ${data.get('phone')}\nInterest: ${data.get('interest')}\n\nApplication:\n${data.get('message')}`;
-    location.href = `mailto:sales@chainwayafrica.co.za?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const form = event.currentTarget;
+    const submit = $('#quoteSubmit');
+    const status = $('#quoteStatus');
+    const originalLabel = submit.innerHTML;
+    submit.disabled = true;
+    submit.innerHTML = 'Sending…';
+    status.className = 'form-status';
+    status.textContent = '';
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/sales@chainwayafrica.co.za', {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form)
+      });
+      if (!response.ok) throw new Error('Submission failed');
+      form.reset();
+      status.classList.add('success');
+      status.textContent = 'Thank you — your enquiry has been sent to our sales team.';
+    } catch (error) {
+      status.classList.add('error');
+      status.innerHTML = 'We could not send that enquiry. Please email <a href="mailto:sales@chainwayafrica.co.za">sales@chainwayafrica.co.za</a>.';
+    } finally {
+      submit.disabled = false;
+      submit.innerHTML = originalLabel;
+    }
   });
 
   renderFilters();
