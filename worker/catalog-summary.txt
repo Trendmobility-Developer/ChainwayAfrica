@@ -1,0 +1,81 @@
+- Ant-RC05 | Ant-RC05 5dBi Panel Antenna | Fixed RFID Readers | Stably and read multi-tags under a moderate range accurately
+- Ant-RC09 | Ant-RC09 9dBi Panel Antenna | Fixed RFID Readers | Fast read & write, high performance, convenient, long read & write distance
+- Ant-RC12 | Ant-RC12 12dBi Panel Antenna | Fixed RFID Readers | Fast read & write, high performance, Long read & write distance
+- C5 | C5 Fingerprint Scanner (Android 11/13) | Biometric Readers | Integrated RFID Reader, Fingerprint Recognition etc.
+- C5 | C5 UHF RFID Reader (Android 11/13) | Handheld RFID Readers | Integrated RFID Reader, Optional Fingerprint Recognition etc.
+- C6000 | C6000 Mobile Computer (Android 10/13) | Mobile Computers | Rugged and Portable, 2m Drop Proof, Supports 1D/2D, NFC, camera and more
+- C61 | C61 Cold Storage Mobile Computer (Android 11/13) | Mobile Computers | Optional 27keys/37keys/47keys, Powerful Removable Battery
+- C61 | C61 Mobile Computer (Android 11/13) | Mobile Computers | Optional 27keys/37keys/47keys, Powerful Removable Battery
+- C61 | C61 UHF RFID Reader (Android 11/13) | Handheld RFID Readers | Superior UHF Performance (Impinj E Series chips, Up to 30m)
+- C63 | C63 Cold Storage Mobile Computer (Android 13) | Mobile Computers | 5600mAh low-temperature battery, active heating for display and scan window
+- C63 | C63 Mobile Computer (Android 13) | Mobile Computers | The Flagship Keypad Handheld For Next-Level Industrial Data Capture.
+- C66 | C66 Built-in RFID Reader (Android 11/13) | Handheld RFID Readers | Portable Built-in RFID Reader, Based on Impinj E Series chips, 5.5" IPS Display
+- C66 | C66 Fingerprint Scanner (Android 11/13) | Biometric Readers | Biometric Reader, 5.5" IPS Display, Qualcomm Snapdragon™ 662 Octa-core
+- C66 | C66 Mobile Computer (Android 11/13) | Mobile Computers | Optional Barcode or RFID Scanning, Fingerprint Recognition, NFC, etc.
+- C66 | C66 UHF RFID Reader (Android 11/13) | Handheld RFID Readers | Stronger UHF Performance (Impinj E Series chips)
+- C66 | C66 Wi-Fi Only (Android 11) | Mobile Computers | WiFi-6-ready, Qualcomm Snapdragon™ 662, 5.5" Display
+- C70 | C70 Mobile Computer (Android 11) | Mobile Computers | Ultra Thin & Light, 5.2" IPS 1080P Screen, 1.8m Drop Proof
+- C70 | C70 Mobile Computer with Thermometer | Mobile Computers | Non-contact Temperature Measurement, 5.2" IPS 1080P Screen, 1.8m Drop Proof
+- C71 | C71 Biometrics Reader (Android 11/13) | Biometric Readers | Accurate Fingerprint Reading and Facial Recognition, 5.2" IPS 1080P Screen
+- C71 | C71 Built-in RFID Reader (Android 11/13) | Handheld RFID Readers | Lightweight and Portable, Built-in RFID (Impinj E Series chips, Up to 4m)
+- C71 | C71 Mobile Computer (Android 11/13) | Mobile Computers | Abundant Functions, Optional Barcode / RFID/ Fingerprint / NFC Scanning, etc.
+- C71 | C71 Optical Fingerprint Scanner (Android 11/13) | Biometric Readers | With FBI Certified Morpho Fingerprint, 1/2D Barcode Scanning, NFC, etc.
+- C72 | C72 Mobile Computer (Android 11/13) | Mobile Computers | Ultimate Barcode Scanning, 8000mAh Powerful Battery, Easy to Hold
+- C72 | C72 UHF RFID Reader (Android 11/13) | Handheld RFID Readers | Best-in-Class UHF RFID Performance, Trusted by the Industry.
+- C75 | C75 Mobile Computer with Printer | Mobile Computers | Can be configured with thermal printer, 1D / 2D, PSAM, NFC, camera and more
+- C90 | C90 Mobile Computer (Android 10/14) | Mobile Computers | 5.7" IPS Display, Supports Dual-Camera, Barcode Scanning, NFC, etc
+- C90A | C90A Mobile Computer (Android 14) | Mobile Computers | Larger Display, Lighter Weight, Stronger Performance.
+- CHAINWAY | CHAINWAY Keyboardemulator | Mobility Family | Support Middleware Development, Promote Convenience
+- CHAINWAY | CHAINWAY RFIDlinked | RFID Software | RFID Data Collection, Printing, Tagging, EPC Compliance, and more.
+- CHAINWAY | CHAINWAY SafeUEM | Mobility Family | All-in-one Platform Management
+- CHAINWAY | CHAINWAY VelocityEmulator | Mobility Family | Support Applications Migration Easily
+- CM2000-1 | CM2000-1 UHF RFID Module (1-Port) | RFID Modules | With high integration level, it enables reliable UHF RFID performance
+- CM2000-4 | CM2000-4 UHF RFID Module (4-Port) | RFID Modules | Reading tags with high stability and receiving sensitivity
+- CM310-1 | CM310-1 UHF RFID Module (1-Port) | RFID Modules | Impinj E310 Chip, 1-Port RFID Module
+- CM-3N | CM-3N UHF RFID Module (1-Port) | RFID Modules | Impinj E310 Chip, RFID Module
+- CM510-1 | CM510-1 UHF RFID Module (1-Port) | RFID Modules | Impinj E510 Chip, 1-Port RFID Module
+- CM-5N | CM-5N UHF RFID Module (1-Port) | RFID Modules | Impinj E510 Chip, RFID Module
+- CM710-1 | CM710-1 UHF RFID Module (1-Port) | RFID Modules | Impinj E710 Chip, 1-Port RFID Module
+- CM710-16 | CM710-16 UHF RFID Module (16-Port) | RFID Modules | Impinj E710 chip, 16-Port RFID module
+- CM710-4 | CM710-4 UHF RFID Module (4-Port) | RFID Modules | Impinj E710 Chip, 4-Port RFID Module
+- CM710-8 | CM710-8 UHF RFID Module (8-Port) | RFID Modules | Impinj E710 Chip,8-Port RFID Module
+- CP20 | CP20 Barcode Printer | Printers | Various interfaces, Max. Printing Speed Up to 152mm/s(6ips)
+- CP30 | CP30 RFID Printer | Printers | Powerful RFID and Barcode Printing, Speedy and Highly Secured
+- MC21 | MC21 Mobile Computer (Android 12) | Mobile Computers | 3.5-inch touchscreen, 5000mAh removable battery
+- MC50 | MC50 5G Mobile Computer (Android 12/14) | Mobile Computers | 5G, IP67 Sealing , 6-inch HD screen，5000mAh Removable Battery
+- MC50 | MC50 5G UHF RFID Reader (Android 12/14) | Handheld RFID Readers | 5G, Detachable RFID Sled, Based on Impinj E710 chip
+- MC51 | MC51 5G Built-in RFID Reader (Android 14) | Handheld RFID Readers | Breakthrough in Read Rates and Accuracy. Powerful RFID Now Fits Right in Your Pocket.
+- MC51 | MC51 5G Mobile Computer (Android 14) | Mobile Computers | Flagship Performance, Long-Term Value
+- MC51 | MC51 5G UHF RFID Reader (Android 14) | Handheld RFID Readers | The New Benchmark in RFID Performance — Max Speed, Max Range, Max Accuracy.
+- MC51S | MC51S Built-in RFID Reader (Android 16) | Handheld RFID Readers | Integrated UHF, Android 16, and 2.8GHz performance—lightweight yet powerful.
+- MC51S | MC51S Mobile Computer (Android 16) | Mobile Computers | Android 16 and Google AER certified, optional 2.8GHz, IP67 sealing.
+- MC51S | MC51S UHF RFID Reader (Android 16) | Handheld RFID Readers | Clip on, capture more. Qualcomm 2.8GHz, Android 16, up to 1,300 tags/s and 30m+ read range.
+- MC62 | MC62 Mobile Computer (Android 13) | Mobile Computers | 5000mAh Removable Battery，supports barcode scanning, NFC, 13MP camera
+- MC80 | MC80 5G UHF RFID Reader (Android 16) | Handheld RFID Readers | Chip-level RFID integration with Android 16, 5G, Wi-Fi 7 and on-device AI.
+- MC95 | MC95 Mobile Computer (Android 12) | Mobile Computers | IP68 Sealing, 5000mAh Removable Battery，Front & Rear Dual Camera
+- MR20 | MR20 Wearable RFID Reader | Bluetooth RFID Readers | Wearable Bluetooth RFID reader, Supports gloves, wristbands, lanyards
+- P100 | P100 5G Built-in RFID Tablet (Android 14) | Rugged Tablets | Built-in UHF module, Read Range of 3+ m, 11 inch HD Display
+- P100 | P100 AI 5G Industrial Tablet (Android 14) | Rugged Tablets | 5G，10.95" Display，10000mAh Removable Battery，IP67 Sealing
+- P100 | P100 AI 5G Medical Tablet (Android 14) | Rugged Tablets | 11-inch large display with 5G and Wi-Fi 6 support, medical-grade antimicrobial design, wet-hand and glove operation supported
+- P100S | P100S Industrial Tablet (Android 14) | Rugged Tablets | 10.95-inch display, 10,000mAh removable smart battery
+- P80 | P80 Industrial Tablet (Android 13) | Biometric Readers, Rugged Tablets | 8'' Screen & 8700mAh Battery, Abundant Functions Available
+- P80 | P80 Industrial Tablet (Android 9) | Biometric Readers, Rugged Tablets | 8'' Screen & 8000mAh Battery, Abundant Functions Available
+- P80 | P80 Optical Fingerprint Tablet (Android 9) | Biometric Readers | 8" Screen, With FBI Certified Morpho Fingerprint, 1/2D, NFC, etc.
+- P80 | P80 RFID Tablet (Android 13) | Rugged Tablets | 8'' Screen & 8700mAh Battery, Abundant Functions Available
+- P80 | P80 RFID Tablet (Android 9) | Rugged Tablets | Superior UHF RFID Performance, 8000mAh Powerful Battery
+- R1 | R1 RFID Reader/Writer | Fixed RFID Readers | Supports Multiple Protocol Standards With Excellent HF&UHF Performance
+- R2 | R2 Bluetooth RFID Reader | Bluetooth RFID Readers, Handheld RFID Readers | UHF Reading and Writing (Up to 31m Outdoors) ，1D/2D Scanning
+- R3 | R3 Desktop RFID Reader | Bluetooth RFID Readers, Fixed RFID Readers | Supports Windows / Android / IOS applications
+- R3S | R3S Desktop RFID Reader | Fixed RFID Readers | Compact in Form. Flexible in Deployment. Built for Your Setup.
+- R5 | R5 Wearable RFID Reader | Bluetooth RFID Readers | Can be paired with Android/iOS device via Bluetooth, RIFD R/W Up to 14m
+- R6 | R6 UHF RFID Sled Reader | Bluetooth RFID Readers, Handheld RFID Readers | Powerful RFID (Impinj E Series chips, Up to 31m), Android/iOS SDK Supported
+- R7 | R7 UHF RFID Sled Reader | Bluetooth RFID Readers, Handheld RFID Readers | Make Your Device a Pro RFID Terminal.
+- SR160 | SR160 Bluetooth RFID Scanner | Bluetooth RFID Readers | UHF & Barcode in One Device. Lightweight, Ergonomic, Versatile.
+- SR160 | SR160 UHF RFID Scanner | Handheld RFID Readers | UHF & Barcode in One Device. Lightweight, Ergonomic, Versatile.
+- U300 | U300 Fixed RFID Reader (Android 11) | Fixed RFID Readers | Optional 4 or 8 ports RFID Reader，Based on Impinj E Series chips
+- UR1A | UR1A Integrated RFID Reader | Fixed RFID Readers | Single-channel Fixed RFID Reader, Based on Impinj E Series chips
+- UR4 | UR4 Fixed RFID Reader | Fixed RFID Readers | Four-port Fixed UHF Reader, Supports RS232 and RJ45
+- UR8 | UR8 Fixed RFID Reader | Fixed RFID Readers | More Ports, Superior Performance, Perfect for Complex Deployments
+- URA4 | URA4 Fixed RFID Reader (Android 13) | Fixed RFID Readers | Excellent RFID Capability with Suitable Android OS & Various Interface
+- URA4 | URA4 Fixed RFID Reader (Android 9) | Fixed RFID Readers | 4-port, Based on Impinj E Series chips, Supports RS232/RJ45/HDMI
+- V600S | V600S Vehicle Computer | Vehicle Computers | 5.5" Display, All-around Dynamic Data Monitoring

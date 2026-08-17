@@ -117,16 +117,26 @@
 
   $('#clearCompare').addEventListener('click', () => { state.compare = []; renderProducts(); renderCompareTray(); });
   const compareDialog = $('#compareDialog');
-  $('#openCompare').addEventListener('click', () => {
+  function openCompareDialog() {
     const selected = state.compare.map(productById).filter(Boolean);
-    if (!selected.length) return;
+    if (!selected.length) return false;
     $('#comparisonGrid').innerHTML = selected.map(product => `<article class="comparison-card"><img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}"><h3>${escapeHTML(product.model)}</h3><p>${escapeHTML(product.name)}</p><ul><li>${escapeHTML(product.description)}</li>${product.categories.map(category => `<li>${escapeHTML(category)}</li>`).join('')}</ul></article>`).join('');
     compareDialog.showModal();
     document.body.classList.add('dialog-open');
-  });
+    return true;
+  }
+  $('#openCompare').addEventListener('click', openCompareDialog);
   $('[data-close-compare]').addEventListener('click', () => compareDialog.close());
   compareDialog.addEventListener('close', () => document.body.classList.remove('dialog-open'));
   compareDialog.addEventListener('click', event => { if (event.target === compareDialog) compareDialog.close(); });
+  $('#aiCompareBtn').addEventListener('click', () => {
+    const selected = state.compare.map(productById).filter(Boolean);
+    if (!selected.length) return;
+    const lines = selected.map(product => `${product.model} — ${product.name}: ${product.description} [${product.categories.join(', ')}]`).join('\n');
+    const prompt = `Give me a detailed side-by-side comparison of these products, with a Markdown table of the key differences and a recommendation for which one fits which use case:\n${lines}`;
+    compareDialog.close();
+    window.ChainwayChat?.ask(prompt);
+  });
 
   const revealObserver = new IntersectionObserver(entries => entries.forEach(entry => {
     if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
@@ -252,6 +262,37 @@
       submit.innerHTML = originalLabel;
     }
   });
+
+  window.ChainwayApp = {
+    setCategoryFilter(category) {
+      if (category !== 'All' && !categories.includes(category)) return;
+      state.category = category;
+      state.search = '';
+      state.limit = 16;
+      search.value = '';
+      renderFilters();
+      renderProducts();
+      $('#catalog').scrollIntoView({ behavior: 'smooth' });
+    },
+    compareProducts(names) {
+      if (!Array.isArray(names) || !names.length) return false;
+      const chosen = [];
+      names.forEach(name => {
+        if (chosen.length >= 3 || typeof name !== 'string' || !name.trim()) return;
+        const needle = name.toLowerCase();
+        const match = products.find(product => !chosen.includes(product.id) && (
+          `${product.model} ${product.name}`.toLowerCase().includes(needle) ||
+          needle.includes(product.model.toLowerCase())
+        ));
+        if (match) chosen.push(match.id);
+      });
+      if (!chosen.length) return false;
+      state.compare = chosen;
+      renderProducts();
+      renderCompareTray();
+      return openCompareDialog();
+    },
+  };
 
   renderFilters();
   renderProducts();

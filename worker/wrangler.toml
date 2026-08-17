@@ -1,0 +1,3 @@
+name = "chainway-chat"
+main = "chat-worker.js"
+compatibility_date = "2025-01-01"
